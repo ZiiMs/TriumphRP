@@ -100,6 +100,8 @@ Citizen.CreateThread(function()
 				break;
 			end
         end
+        --[[print("GZone: " .. GetNameOfZone(pos.x, pos.y, pos.z))
+        print("Zone: " .. zones[GetNameOfZone(pos.x, pos.y, pos.z)])]]
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
             if (GetStreetNameFromHashKey(var1)) and (GetStreetNameFromHashKey(var2)) and GetNameOfZone(pos.x, pos.y, pos.z) then
                 if var2 == nil or tostring(GetStreetNameFromHashKey(var2)) == "" then 
