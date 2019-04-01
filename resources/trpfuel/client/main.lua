@@ -343,7 +343,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(250)
 
 		if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-			Citizen.Wait(2500)
+			Citizen.Wait(1)
 
 			Timer = true
 		else
@@ -473,11 +473,12 @@ function DisplayHud()
 		y = -0.001 ,
 	}
 
-	if Config.ShouldDisplayHud and IsPedInAnyVehicle(playerPed, false) and GetSeatPedIsIn(playerPed) == -1 then
+	if Config.ShouldDisplayHud and GetVehiclePedIsIn(playerPed, false) ~= 0 then
+
 		local vehicle = GetPlayersLastVehicle()
 		local fuel    = math.ceil(round(GetVehicleFuelLevel(vehicle), 1))
 
-		if fuel == 0 then
+		if  fuel == 0 then
 			fuel = "0"
 		end
 
@@ -485,7 +486,7 @@ function DisplayHud()
 		y = -0.001
 
 		drawTxt(UI.x + 0.715, UI.y + 1.455, 1.0,1.071,0.64, fuel, 255, 255, 255, 255)
-		drawTxt(UI.x + 0.740, UI.y + 1.462, 1.0,1.071,0.42, "FUEL", 255, 255, 255, 255)
+		drawTxt(UI.x + 0.740, UI.y + 1.462, 1.0,1.071,0.42, "fuel", 255, 255, 255, 255)
 	end
 end
 

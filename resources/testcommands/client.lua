@@ -73,22 +73,55 @@ RegisterCommand("goto", function(source, args, rawCommand)
         return false
     end
     local pos = GetEntityCoords(destped, true)
-    SetEntityCoords(ped, pos, 1, 0, 0, 1)
+    Citizen.CreateThread(function()
+        --pos.z = pos.z + 1.0
+        SetFocusArea(pos.x, pos.y, pos.z, 0.0, 0.0, 0.0)
+        local pos = GetEntityCoords(destped, true)
+        NetworkFadeOutEntity(ped, true, false)
+        Wait(500)
+        pos = GetEntityCoords(destped, true)
+        SetPedCoordsKeepVehicle(ped, pos.x, pos.y, pos.z + 1.0)
+        NetworkFadeInEntity(ped, 0)
+        
+    end)
+end)
+
+RegisterCommand("gotowp", function(source, args, rawCommand)
+    local ped = GetPlayerPed(PlayerId())
+    local blip = GetFirstBlipInfoId(8)
+    if blip ~= 0 then
+        local blipPos = GetBlipCoords(blip)
+        local zPos
+        Citizen.CreateThread(function()
+            SetFocusArea(blipPos.x, blipPos.y, blipPos.z, 0.0, 0.0, 0.0)
+            NetworkFadeOutEntity(ped, true, false)
+            Wait(500)
+            _, zPos = GetGroundZFor_3dCoord(blipPos.x+.0, blipPos.y+.0, blipPos.z+9999.0, 1)
+            SetPedCoordsKeepVehicle(ped, blipPos.x, blipPos.y, zPos)
+            NetworkFadeInEntity(ped, 0)
+        end)
+        --TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"Z: " .. 0.0 .. " Z2: " .. zPos}})
+    else
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You don't have a waypoint placed."}})
+    end
 end)
 
 RegisterCommand("veh", function(source, args, rawCommand)
-    local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 8.0, 0.5))
-    local veh = args[1]
+    local veh = args[1] or 'adder'
     local ped = GetPlayerPed(-1)
-    if veh == nil then veh = "adder" end
+    local pos = GetEntityCoords(ped, true)
+    if not IsModelInCdimage(veh) or not IsModelAVehicle(veh) then
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {veh .. " is not a vehicle model."}})
+        return false
+    end
     vehiclehash = GetHashKey(veh)
     RequestModel(vehiclehash)
-    TriggerEvent('chat:addMessage', {
-        color = { 255, 0, 0},
-        multiline = true,
-        args = {"Me", "Vehicle hash: " .. vehiclehash .. "."}
-      })
-    v = CreateVehicle(vehiclehash, x, y, z, GetEntityHeading(PlayerPedId())+90, 1, 0)
+    while not HasModelLoaded(veh) do
+        Wait(500)
+    end
+    
+    TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You just spawned a ^*" .. veh:gsub("^%l", string.upper) .. "."}})
+    v = CreateVehicle(vehiclehash, pos.x, pos.y, pos.z, GetEntityHeading(PlayerPedId())+90, 1, 0)
     SetPedIntoVehicle(ped, v, -1)
 end)
 
@@ -115,4 +148,16 @@ end
 AddEventHandler("playerSpawned", function()
     NetworkSetFriendlyFireOption(true)
     SetCanAttackFriendly(PlayerPedId(), true, true)
+end)
+
+Citizen.CreateThread(function()
+    for i = 1, 32 do
+        Citizen.InvokeNative(0xDC0F817884CDD856, i, false)
+    end
+    while true do
+        Citizen.Wait(0)
+        if GetPlayerWantedLevel(PlayerId()) ~= 0 then
+            ClearPlayerWantedLevel(PlayerId())
+        end
+    end
 end)
