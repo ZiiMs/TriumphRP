@@ -1,27 +1,51 @@
 MySQL.ready(function ()
-    print("Mysql Data: " .. MySQL.Sync.fetchScalar('SELECT @parameters', {
-        ['@parameters'] =  'string'
+    print("[MYSQL]: " .. MySQL.Sync.fetchScalar('SELECT @parameters', {
+        ['@parameters'] =  'Successfully connected!'
     }))
-    local identifier = PlayerIdentifier('steam', players_server_id)
-    MySQL.Sync.execute("INSERT INTO accounts (name, steamid) VALUES(" .. GetPlayerName(-1) .. ", " .. Get)
-    print("Loaded: ")
 end)
+local wb
 
-function PlayerIdentifier(type, id)
-    local identifiers = {}
-    local numIdentifiers = GetNumPlayerIdentifiers(id)
+local function OnPlayerConnecting(name, setKickReason, deferrals)
+    local lastSource = source
+    local identifiers, steamIdentifier = GetPlayerIdentifiers(source)
+    deferrals.defer()
 
-    for a = 0, numIdentifiers do
-        table.insert(identifiers, GetPlayerIdentifier(id, a))
-    end
-
-    for b = 1, #identifiers do
-        if string.find(identifiers[b], type, 1) then
-            return identifiers[b]
+    deferrals.update(string.format("Hello %s. Your steam id is being checked.", name))
+    for _, v in pairs(identifiers) do
+        if string.find(v, "steam") then
+            steamIdentifier = v
+            break
         end
     end
-    return false
+    MySQL.Async.fetchAll('SELECT * FROM accounts WHERE steamid=@steamid', {['@steamid'] = steamIdentifier}, function(gotInfo)
+        if gotInfo[1] ~= nil then
+            wb = true
+        else 
+            MySQL.Async.execute("INSERT INTO accounts (name, steamid) VALUES (@name, @steamid)",
+                {
+                    ['@name'] = name,
+                    ['@steamid'] = steamIdentifier
+                })
+            wb = false
+        end
+    end)
+    if not steamIdentifier then
+        deferrals.done("You are not connected to steam.")
+    else
+        deferrals.done()
+    end
 end
+
+RegisterNetEvent('serverPlayerSpawned')
+AddEventHandler('serverPlayerSpawned', function(returning)
+    if wb == false then
+        TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome " .. GetPlayerName(source) .. " to Triumph RP.")
+    else
+        TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome back to Triumph RP " .. GetPlayerName(source) .. ".")
+    end
+end)
+
+AddEventHandler("playerConnecting", OnPlayerConnecting)
 
 
 --steamid, id, name
