@@ -110,7 +110,7 @@ Citizen.CreateThread(function()
             else
                 if zones[GetNameOfZone(pos.x, pos.y, pos.z)] and tostring(GetStreetNameFromHashKey(var1)) and tostring(GetStreetNameFromHashKey(var2)) then
                     drawTxt(0.670, 1.46, 1.0,1.0,0.4, direction .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var2)) .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var1)) .. "~w~" .. "~b~ | ~w~" .. zones[GetNameOfZone(pos.x, pos.y, pos.z)], 255, 255, 255, 255)
-                    print("Zones: " .. zones[GetNameOfZone(pos.x, pos.y, pos.z)] .. " | StreetName: " .. tostring(GetStreetNameFromHashKey(var1)))
+                    print("Zodnses: " .. zones[GetNameOfZone(pos.x, pos.y, pos.z)] .. " | StreetName: " .. tostring(GetStreetNameFromHashKey(var1)))
                 end 
             end
 		end
