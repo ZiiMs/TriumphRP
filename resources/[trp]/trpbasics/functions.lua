@@ -1,4 +1,4 @@
-local timerEnable
+
 local time = 800
 local color = { r = 220, g = 220, b = 220, alpha = 255 } -- Color of the text 
 local font = 0 -- Font of the text
@@ -7,14 +7,12 @@ local background = {
 }
 local dropShadow = false
 
-
 function Display(mePlayer, text, offset)
-    local timer = time
+    local timer = GetGameTimer()
     timerEnable = true
     Citizen.CreateThread(function()
-        while(timer ~= 0) do
+        while(GetGameTimer() < timer + 5000) do
             Wait(0)
-            timer = timer -1
             if timerEnable == false then
                 break;
             end
@@ -65,4 +63,10 @@ end
 
 function drawRct(x,y,width,height,r,g,b,a)
 	DrawRect(x + width/2, y + height/2, width, height, r, g, b, a)
+end
+
+function alert(msg) 
+    BeginTextCommandDisplayHelp("STRING")
+    AddTextComponentSubstringPlayerName(msg)
+    EndTextCommandDisplayHelp(0, 0, 1, -1)
 end

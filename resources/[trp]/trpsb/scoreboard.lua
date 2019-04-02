@@ -108,13 +108,8 @@ Citizen.CreateThread(function ()
     while true do 
         Wait(0)
         if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
-            LastPress = GetGameTimer()
-        end
-
-        if GetGameTimer() < LastPress + 5000 then
             DrawPList()
         end
     end
-
 end)
 

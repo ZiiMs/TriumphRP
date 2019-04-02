@@ -170,6 +170,13 @@ RegisterCommand("veh", function(source, args, rawCommand)
     SetPedIntoVehicle(ped, v, -1)
 end)
 
+RegisterCommand("repairveh", function(source, args, rawCommand)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped,false)
+    if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) end
+    SetVehicleFixed(veh)
+end)
+
 RegisterCommand("pos", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped, true)
