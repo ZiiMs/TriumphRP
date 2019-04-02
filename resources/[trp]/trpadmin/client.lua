@@ -152,7 +152,7 @@ RegisterCommand("gotowp", function(source, args, rawCommand)
 end)
 
 RegisterCommand("veh", function(source, args, rawCommand)
-    local veh = args[1] or 'adder'
+    local veh = args[1] or 'Panto'
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped, true)
     if not IsModelInCdimage(veh) or not IsModelAVehicle(veh) then

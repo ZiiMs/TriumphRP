@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               8.0.14 - MySQL Community Server - GPL
+-- Server version:               8.0.15 - MySQL Community Server - GPL
 -- Server OS:                    Win64
 -- HeidiSQL Version:             10.1.0.5464
 -- --------------------------------------------------------
@@ -23,8 +23,9 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(32) NOT NULL,
   `steamid` varchar(64) NOT NULL,
+  `money` int(32) NOT NULL DEFAULT '2500',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
