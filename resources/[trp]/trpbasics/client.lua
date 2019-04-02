@@ -30,9 +30,5 @@ RegisterCommand("door", function(source, args, rawCommand)
     end
 end)
 
-RegisterCommand("help", function(source, args, rawCommand)
-    alert("~b~Help info   ~INPUT_VEH_HEADLIGHT~")
-end)
-
 
 

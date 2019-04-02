@@ -104,11 +104,36 @@ function DrawText(text, x, y, rightX, justification, r, g, b, size, font)
 end
 
 local LastPress = 0
+local mpGamerTags = {}
 Citizen.CreateThread(function () 
     while true do 
         Wait(0)
         if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
             DrawPList()
+
+            for i = 0, 255 do
+                if NetworkIsPlayerActive(i) and i ~= PlayerId() then
+                    local ped = GetPlayerPed(i)
+
+                    -- change the ped, because changing player models may recreate the ped
+                    if not mpGamerTags[i] or mpGamerTags[i].ped ~= ped then
+                    local nameTag = (GetPlayerServerId(i))
+
+                    if mpGamerTags[i] then
+                        RemoveMpGamerTag(mpGamerTags[i])
+                    end
+
+                    mpGamerTags[i] = {
+                        tag = CreateMpGamerTag(GetPlayerPed(i), nameTag, false, false, '', 0),
+                        ped = ped
+                    }
+                    end
+                else
+                    RemoveMpGamerTag(mpGamerTags[i])
+
+                    mpGamerTags[i] = nil
+                end
+                end
         end
     end
 end)
