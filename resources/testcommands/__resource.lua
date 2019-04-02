@@ -1,11 +1,8 @@
+server_script '@mysql-async/lib/MySQL.lua'
 client_script 'client.lua'
-server_script 'server.lua'resource_manifest_version '44febabe-d386-4d18-afbe-5e627f4af937'
-
-client_scripts {
-    'client.lua'
-}
-
 server_script 'server.lua'
+
+resource_manifest_version '44febabe-d386-4d18-afbe-5e627f4af937'
 
 -- extra data can be used as well
 my_data 'one' { two = 42 }

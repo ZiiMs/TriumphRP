@@ -27,6 +27,23 @@ local function DrawPList()
         end
         scoreBoard = scoreBoard + 1
     end
+    --For testing scoreboard
+    --[[for i = 0, 31 do
+        name = "Player " .. i
+        serverid = i
+        local bg
+        if serverid % 2 == 0 then bg = 15 else bg = 20 end
+        local pId = PlayerId()
+        pId = pId + 1
+        if i == 1 then
+            DrawRow(name, serverid, 0.04 * (scoreBoard + 1), 75, 150, 255, 0, bg)
+            --print("k :" .. k .. " | PlayerID: " .. PlayerId())
+        else 
+            DrawRow(name, serverid, 0.04 * (scoreBoard + 1), _, _, _, 0, bg)
+        end
+        scoreBoard = scoreBoard + 1
+    end]]
+
 end
 
 

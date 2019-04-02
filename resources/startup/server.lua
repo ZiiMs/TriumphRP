@@ -4,6 +4,7 @@ MySQL.ready(function ()
     }))
 end)
 local wb
+local money
 
 local function OnPlayerConnecting(name, setKickReason, deferrals)
     local lastSource = source
@@ -19,6 +20,11 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
     end
     MySQL.Async.fetchAll('SELECT * FROM accounts WHERE steamid=@steamid', {['@steamid'] = steamIdentifier}, function(gotInfo)
         if gotInfo[1] ~= nil then
+            print("Info1: ".. gotInfo[1].id)
+            print("Info2: ".. gotInfo[1].name)
+            print("Info3: ".. gotInfo[1].steamid)
+            print("Info4: "..gotInfo[1].money)
+            money = gotInfo[1].money
             wb = true
         else 
             MySQL.Async.execute("INSERT INTO accounts (name, steamid) VALUES (@name, @steamid)",
@@ -26,6 +32,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
                     ['@name'] = name,
                     ['@steamid'] = steamIdentifier
                 })
+            TriggerClientEvent('loadMoney', lastSource, 2500)
             wb = false
         end
     end)
@@ -40,8 +47,10 @@ RegisterNetEvent('serverPlayerSpawned')
 AddEventHandler('serverPlayerSpawned', function(returning)
     if wb == false then
         TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome " .. GetPlayerName(source) .. " to Triumph RP.")
+        TriggerClientEvent('loadMoney', source, 2500)
     else
         TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome back to Triumph RP " .. GetPlayerName(source) .. ".")
+        TriggerClientEvent('loadMoney', source, money)
     end
 end)
 

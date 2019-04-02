@@ -38,6 +38,39 @@ RegisterCommand("disarm", function(source, args, rawCommand)
     end 
 end)
 
+RegisterCommand("setmoney", function(source, args, rawCommand)
+    local ped = GetPlayerPed(PlayerId())
+    local targetid = GetPlayerFromServerId(tonumber(args[1]))
+    local target = GetPlayerPed(targetid)
+    local amount = tonumber(args[2])
+    if args[1] == nil then
+        TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"Usage", "/setmoney [playerid] [amount]"}})
+        return false
+    elseif GetPlayerFromServerId(tonumber(args[1])) == -1 then
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You specified a invalid ID."}})
+        return false
+    end
+    if amount == nil or amount <= 0 then
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You have specified a invalid amount."}})
+    else
+        SetPedMoney(target, amount)
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You just set ".. GetPlayerName(targetid) .." money to ^*$".. amount.."."}})
+        TriggerServerEvent('saveMoney', amount)
+    end
+end)
+
+function checkMoney()
+    local ped = GetPlayerPed(PlayerId())
+    local money = GetPedMoney(ped)
+    return "$"..money
+end
+
+RegisterCommand("cash", function(source, args, rawCommand)
+    TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"Your Money: "}})
+    TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {checkMoney()}})
+    
+end)
+
 RegisterCommand("listweapons", function(source, args, rawCommand)
     local weaponNames = {  
         "KNIFE", "NIGHTSTICK", "HAMMER", "BAT", "GOLFCLUB",  
@@ -76,13 +109,24 @@ RegisterCommand("goto", function(source, args, rawCommand)
     Citizen.CreateThread(function()
         --pos.z = pos.z + 1.0
         SetFocusArea(pos.x, pos.y, pos.z, 0.0, 0.0, 0.0)
-        local pos = GetEntityCoords(destped, true)
-        NetworkFadeOutEntity(ped, true, false)
-        Wait(500)
-        pos = GetEntityCoords(destped, true)
-        SetPedCoordsKeepVehicle(ped, pos.x, pos.y, pos.z + 1.0)
-        NetworkFadeInEntity(ped, 0)
-        
+        if (GetVehiclePedIsIn(destped,false) == 0 ) then
+            local pos = GetEntityCoords(destped, true)
+            NetworkFadeOutEntity(ped, true, false)
+            Wait(500)
+            pos = GetEntityCoords(destped, true)
+            SetPedCoordsKeepVehicle(ped, pos.x, pos.y, pos.z + 1.0)
+            ClearFocus()
+            NetworkFadeInEntity(ped, 0)
+        else
+            local pos = GetEntityCoords(destped, true)
+            NetworkFadeOutEntity(ped, true, false)
+            Wait(500)
+            SetPedCoordsKeepVehicle(ped, pos.x, pos.y, pos.z + 1.0)
+            Wait(250)
+            SetPedIntoVehicle(ped, GetVehiclePedIsIn(destped,false), -2)
+            ClearFocus()
+            NetworkFadeInEntity(ped, 0)
+        end
     end)
 end)
 
@@ -98,6 +142,7 @@ RegisterCommand("gotowp", function(source, args, rawCommand)
             Wait(500)
             _, zPos = GetGroundZFor_3dCoord(blipPos.x+.0, blipPos.y+.0, blipPos.z+9999.0, 1)
             SetPedCoordsKeepVehicle(ped, blipPos.x, blipPos.y, zPos)
+            ClearFocus()
             NetworkFadeInEntity(ped, 0)
         end)
         --TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"Z: " .. 0.0 .. " Z2: " .. zPos}})
@@ -148,16 +193,4 @@ end
 AddEventHandler("playerSpawned", function()
     NetworkSetFriendlyFireOption(true)
     SetCanAttackFriendly(PlayerPedId(), true, true)
-end)
-
-Citizen.CreateThread(function()
-    for i = 1, 32 do
-        Citizen.InvokeNative(0xDC0F817884CDD856, i, false)
-    end
-    while true do
-        Citizen.Wait(0)
-        if GetPlayerWantedLevel(PlayerId()) ~= 0 then
-            ClearPlayerWantedLevel(PlayerId())
-        end
-    end
 end)
