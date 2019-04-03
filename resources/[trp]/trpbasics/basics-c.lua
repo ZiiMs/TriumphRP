@@ -29,5 +29,22 @@ RegisterCommand("door", function(source, args, rawCommand)
     end
 end)
 
+RegisterCommand("seat", function(source, args, rawCommand)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped,false)
+    local seat = tonumber(args[1])
+
+    if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) end
+    --[[if (seat > GetVehicleModelNumberOfSeats(veh)) then 
+        TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"Usage", "/seat [seatid]"}}) 
+        TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"FrontR: 0 | FrontL: 1 | BackR: 2 | BackL: 3 | Hood: 4 | Trunk: 5 | Trunk2: 6"}}) 
+        return false
+    end]]
+    if GetPedInVehicleSeat(veh, seat) ~= 0 then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"Someone is in that seat."}}) end
+    SetPedIntoVehicle(ped, veh, seat)
+end)
+
+
+
 
 

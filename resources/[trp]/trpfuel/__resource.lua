@@ -1,8 +1,8 @@
 server_scripts {
-	'server/main.lua'	
+	'fuel-s.lua'	
 }
 
 client_scripts {
 	'config.lua',
-	'client/main.lua'
+	'fuel-c.lua'
 }

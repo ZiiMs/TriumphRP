@@ -157,9 +157,9 @@ Citizen.CreateThread(function()
 
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
             if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
-                drawTxt(0.670, 1.395, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
-            else
                 drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+            else
+                drawTxt(0.670, 1.345, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
             end
         else 
             drawTxt(0.670, 1.460, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
@@ -213,6 +213,82 @@ Citizen.CreateThread(function()
         resetSpeedOnEnter = true
     end
   end
+end)
+
+local speedBuffer  = {}
+local velBuffer    = {}
+local beltOn       = false
+local wasInCar     = false
+
+IsCar = function(veh)
+    local vc = GetVehicleClass(veh)
+    return (vc >= 0 and vc <= 7) or (vc >= 9 and vc <= 12) or (vc >= 17 and vc <= 20)
+end	
+
+Fwv = function (entity)
+    local hr = GetEntityHeading(entity) + 90.0
+    if hr < 0.0 then hr = 360.0 + hr end
+    hr = hr * 0.0174533
+    return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
+end
+
+Citizen.CreateThread(function()
+    Wait(500)
+    while true do
+    Wait(0)
+    local ped = GetPlayerPed(-1)
+    local car = GetVehiclePedIsIn(ped)
+
+    if car ~= 0 and (wasInCar or IsCar(car)) then
+
+        wasInCar = true
+    
+        if beltOn then DisableControlAction(0, 75) end
+    
+            speedBuffer[2] = speedBuffer[1]
+            speedBuffer[1] = GetEntitySpeed(car)
+    
+            if speedBuffer[2] ~= nil 
+            and not beltOn
+            and GetEntitySpeedVector(car, true).y > 1.0  
+            and speedBuffer[1] > 15.25
+            and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255 ) then
+            
+                local co = GetEntityCoords(ped)
+                local fw = Fwv(ped)
+                SetEntityCoords(ped, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+                SetEntityVelocity(ped, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+                Citizen.Wait(1)
+                SetPedToRagdoll(ped, 1000, 1000, 0, 0, 0, 0)
+            end
+        
+            velBuffer[2] = velBuffer[1]
+            velBuffer[1] = GetEntityVelocity(car)
+        
+            if IsControlJustReleased(0, 311) then
+                beltOn = not beltOn				  
+            end
+            if (GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped) then
+                if beltOn then 
+                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                else 
+                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                end
+            else
+                if beltOn then 
+                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                else 
+                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                end
+            end
+
+    
+        elseif wasInCar then
+            wasInCar = false
+            beltOn = false
+            speedBuffer[1], speedBuffer[2] = 0.0, 0.0
+        end
+    end
 end)
 
 function showHelpNotification(msg)

@@ -53,7 +53,7 @@ RegisterCommand("setmoney", function(source, args, rawCommand)
     if amount == nil or amount <= 0 then
         TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You have specified a invalid amount."}})
     else
-        SetPedMoney(target, amount)
+        playerData.money = amount
         TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"You just set ".. GetPlayerName(targetid) .." money to ^*$".. amount.."."}})
         TriggerServerEvent('saveMoney', amount)
     end
@@ -61,7 +61,8 @@ end)
 
 function checkMoney()
     local ped = GetPlayerPed(PlayerId())
-    local money = GetPedMoney(ped)
+    local money = tonumber(playerData.money)
+    print(playerData.money)
     return "$"..money
 end
 
