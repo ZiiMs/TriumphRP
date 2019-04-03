@@ -103,16 +103,22 @@ function DrawText(text, x, y, rightX, justification, r, g, b, size, font)
     EndTextCommandDisplayText(x, y)
 end
 
-local LastPress = 0
-local mpGamerTags = {}
 Citizen.CreateThread(function () 
     while true do 
         Wait(0)
         if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
             DrawPList()
+        end
+    end
+end)
 
+local mpGamerTags = {}
+Citizen.CreateThread(function () 
+    while true do 
+        Wait(0)
+        if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
             for i = 0, 255 do
-                if NetworkIsPlayerActive(i) and i ~= PlayerId() then
+                if NetworkIsPlayerActive(i) then
                     local ped = GetPlayerPed(i)
 
                     -- change the ped, because changing player models may recreate the ped
@@ -120,7 +126,7 @@ Citizen.CreateThread(function ()
                     local nameTag = (GetPlayerServerId(i))
 
                     if mpGamerTags[i] then
-                        RemoveMpGamerTag(mpGamerTags[i])
+                        RemoveMpGamerTag(mpGamerTags[i].tag)
                     end
 
                     mpGamerTags[i] = {
@@ -133,7 +139,18 @@ Citizen.CreateThread(function ()
 
                     mpGamerTags[i] = nil
                 end
+            end
+        elseif IsControlJustReleased(0, 20) or IsControlJustReleased(0, 27) then
+            --print("Released" .. mpGamerTags[1])
+            for i = 0, 255 do
+                if NetworkIsPlayerActive(i) then
+                    local ped = GetPlayerPed(i)
+                    if mpGamerTags[i] then
+                        RemoveMpGamerTag(mpGamerTags[i].tag)
+                        mpGamerTags[i] = nil
+                    end
                 end
+            end      
         end
     end
 end)

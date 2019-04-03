@@ -58,7 +58,7 @@ Citizen.CreateThread(function()
 
                 if SPEEDO.Speed == 'mph' then -- if you change to "kmh" make sure to change this to "elseif" rather then "if"
                     drawTxt(UI.x + 0.670, 	UI.y + 1.420, 1.0,1.0,0.64 , "~w~" .. math.ceil(Speed), 255, 255, 255, 255)
-                    drawTxt(UI.x + 0.690, 	UI.y + 1.427, 1.0,1.0,0.4, "~w~ mph", 255, 255, 255, 255)
+                    drawTxt(UI.x + 0.690, 	UI.y + 1.427, 1.0,1.0,0.4, "~w~ mp/h", 255, 255, 255, 255)
                 else
                     drawTxt(UI.x + 0.81, 	UI.y + 1.438, 1.0,1.0,0.64 , [[Carhud ~r~ERROR~w~ ~c~in ~w~SPEEDO Speed~c~ config (something else than ~y~'kmh'~c~ or ~y~'mph'~c~)]], 255, 255, 255, 255)
                 end
@@ -100,11 +100,6 @@ Citizen.CreateThread(function()
 				break;
 			end
         end
-        --[[print("GZone: " .. GetNameOfZone(pos.x, pos.y, pos.z))
-        print("Zone: " .. zones[GetNameOfZone(pos.x, pos.y, pos.z)])]]
-        --[[if GetNameOfZone(pos.x, pos.y, pos.z) == 'golf' then
-            print("Golf op")
-        end]]
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
             if (GetStreetNameFromHashKey(var1)) and (GetStreetNameFromHashKey(var2)) and GetNameOfZone(pos.x, pos.y, pos.z) then
                 if var2 == nil or tostring(GetStreetNameFromHashKey(var2)) == "" then 
@@ -121,3 +116,107 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
+-- Time Display
+local hour = GetClockHours()
+local minute = GetClockMinutes()
+
+function CalculateTimeToDisplay()
+	hour = GetClockHours()
+    minute = GetClockMinutes()
+
+        if hour == 0 or hour == 24 then
+            hour = 12
+        end
+		if hour >= 13 then
+			hour = hour - 12
+        end
+        
+	if hour <= 9 then
+		hour = "0" .. hour
+	end
+	if minute <= 9 then
+		minute = "0" .. minute
+	end
+end
+
+
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(1)
+		timeAndDateString = ""
+		
+        if tonumber(hour) <= 13 then
+            CalculateTimeToDisplay()
+			timeAndDateString = timeAndDateString .. hour .. ":" .. minute .. " PM" -- Example: Time: 00:00
+        else
+            CalculateTimeToDisplay()
+			timeAndDateString = timeAndDateString .. hour .. ":" .. minute .. " AM" -- Example: Time: 00:00
+        end
+
+        if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
+            if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
+                drawTxt(0.670, 1.395, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+            else
+                drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+            end
+        else 
+            drawTxt(0.670, 1.460, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+        end
+	end
+end)
+
+-- Speed Restricter(Limits speed, for realistic driving)
+local useMph = true -- if false, it will display speed in kph
+
+Citizen.CreateThread(function()
+  local resetSpeedOnEnter = true
+  local cruiseEnabled = false
+  while true do
+        Citizen.Wait(0)
+        local playerPed = GetPlayerPed(-1)
+        local vehicle = GetVehiclePedIsIn(playerPed,false)
+        if GetPedInVehicleSeat(vehicle, -1) == playerPed and IsPedInAnyVehicle(playerPed, false) then
+        -- This should only happen on vehicle first entry to disable any old values
+        if resetSpeedOnEnter then
+            maxSpeed = GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel")
+            SetEntityMaxSpeed(vehicle, maxSpeed)
+            resetSpeedOnEnter = false
+            print(1)
+        end
+        -- Disable speed limiter
+        if IsControlJustReleased(0,246) and cruiseEnabled == true then
+            cruiseEnabled = false
+            maxSpeed = GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel")
+            SetEntityMaxSpeed(vehicle, maxSpeed)
+            drawTxt(0.670, 1.460, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
+            print(2)
+        -- Enable speed limiter
+        elseif IsControlJustReleased(0,246) and cruiseEnabled == false then
+            cruiseEnabled = true
+            cruise = GetEntitySpeed(vehicle)
+            SetEntityMaxSpeed(vehicle, cruise)
+            if useMph then
+                cruise = math.floor(cruise * 2.23694 + 0.5)
+                drawTxt(0.670, 1.460, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
+                showHelpNotification("~INPUT_MP_TEXT_CHAT_TEAM~ to disable.")
+                print(3)
+            end
+        end
+        if cruiseEnabled then
+            drawTxt(0.670, 1.395, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
+        else
+            drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
+        end
+    else 
+        resetSpeedOnEnter = true
+    end
+  end
+end)
+
+function showHelpNotification(msg)
+    BeginTextCommandDisplayHelp("STRING")
+    AddTextComponentSubstringPlayerName(msg)
+    EndTextCommandDisplayHelp(0, 0, 1, -1)
+end

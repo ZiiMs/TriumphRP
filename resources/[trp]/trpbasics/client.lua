@@ -1,6 +1,5 @@
 RegisterCommand('me', function(source, args)
-    local text = '* ' .. args[1] .. ' *'
-    timerEnable = false
+    local text = '' .. table.concat(args, " ") .. ''
     TriggerServerEvent('3dme:shareDisplay', text)
 
 end)
@@ -24,9 +23,9 @@ RegisterCommand("door", function(source, args, rawCommand)
         return false
     end
     if status == 0.0 then
-        SetVehicleDoorOpen(veh, door, true, true)
+        SetVehicleDoorOpen(veh, door, true, false)
     else
-        SetVehicleDoorShut(veh, door, true)
+        SetVehicleDoorShut(veh, door, false)
     end
 end)
 

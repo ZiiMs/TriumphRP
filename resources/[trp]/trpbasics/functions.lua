@@ -1,19 +1,19 @@
 
-local time = 800
+local time = 1
 local color = { r = 220, g = 220, b = 220, alpha = 255 } -- Color of the text 
 local font = 0 -- Font of the text
 local background = {
-    color = { r = 0, g = 0, b = 0, alpha = 200 },
+    color = { r = 0, g = 0, b = 0, alpha = 150 },
 }
 local dropShadow = false
 
 function Display(mePlayer, text, offset)
     local timer = GetGameTimer()
-    timerEnable = true
+    time = time + 1
     Citizen.CreateThread(function()
         while(GetGameTimer() < timer + 5000) do
             Wait(0)
-            if timerEnable == false then
+            if time >= 3 then
                 break;
             end
             local coordsMe = GetEntityCoords(GetPlayerPed(mePlayer), false)
@@ -23,6 +23,7 @@ function Display(mePlayer, text, offset)
                 DrawText3D(coordsMe['x'], coordsMe['y'], coordsMe['z'], text)
             end
         end
+        time = time -1
     end)
 end
 
@@ -56,13 +57,9 @@ function DrawText3D(x,y,z, text)
         AddTextComponentString(text)
         EndTextCommandDisplayText(_x, _y)
 
-        DrawRect(_x, _y+scale/45, width, height, background.color.r, background.color.g, background.color.b , background.color.alpha)
+        DrawRect(_x, _y+scale/45, width+0.01, height+0.015, background.color.r, background.color.g, background.color.b , background.color.alpha)
 
     end
-end
-
-function drawRct(x,y,width,height,r,g,b,a)
-	DrawRect(x + width/2, y + height/2, width, height, r, g, b, a)
 end
 
 function alert(msg) 

@@ -170,12 +170,38 @@ RegisterCommand("veh", function(source, args, rawCommand)
     SetPedIntoVehicle(ped, v, -1)
 end)
 
-RegisterCommand("repairveh", function(source, args, rawCommand)
+RegisterCommand("repair", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)
     if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) end
     SetVehicleFixed(veh)
 end)
+
+RegisterCommand("dv", function(source, args, rawCommand)
+    local ped = GetPlayerPed(-1)
+    local pos = GetEntityCoords(ped, true)
+    local nearveh = GetClosestVehicle(pos, 5.0, 0, 0)
+    local veh = GetVehiclePedIsIn(ped)
+    if (nearveh == 0 and veh == 0) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle or near a vehicle."}}) end
+    if nearveh ~= 0 then
+        SetEntityAsMissionEntity(nearveh, true, true)
+        DeleteVehicle(nearveh)
+    else
+        SetEntityAsMissionEntity(veh, true, true)
+        DeleteVehicle(veh)
+    end
+end)
+
+RegisterCommand("mod", function(source, args, rawCommand)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped,false)
+    if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) end
+    SetVehicleFixed(veh)
+    SetVehicleModKit(veh,0)
+    SetVehicleMod(veh,11,3)
+    print(GetVehicleMod(veh, 11))
+end)
+
 
 RegisterCommand("pos", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
