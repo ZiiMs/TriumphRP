@@ -151,6 +151,20 @@ RegisterCommand("gotowp", function(source, args, rawCommand)
     end
 end)
 
+RegisterCommand("gotopos", function(source, args, rawCommand)
+    local ped = GetPlayerPed(PlayerId())
+    local posX, posY, posZ = tonumber(args[1]), tonumber(args[2]), tonumber(args[3])
+    print(pos)
+    Citizen.CreateThread(function()
+        SetFocusArea(posX, posY, posZ, 0.0, 0.0, 0.0)
+        NetworkFadeOutEntity(ped, true, false)
+        Wait(500)
+        SetPedCoordsKeepVehicle(ped, posX, posY, posZ)
+        ClearFocus()
+        NetworkFadeInEntity(ped, 0)
+    end)
+end)
+
 RegisterCommand("veh", function(source, args, rawCommand)
     local veh = args[1] or 'Panto'
     local ped = GetPlayerPed(-1)

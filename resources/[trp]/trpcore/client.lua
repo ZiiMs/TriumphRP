@@ -43,6 +43,10 @@ Citizen.CreateThread(function()
         ClearPlayerWantedLevel(PlayerId())
         SetMaxWantedLevel(0)
         SetPoliceIgnorePlayer(PlayerId(), true)
+        ResetPlayerStamina(PlayerId())
+        for i=0,20 do
+            EnableDispatchService(i, false)
+        end
 
         -- Controller For PED and VEHICLE density!
         SetVehicleDensityMultiplierThisFrame(0.3)

@@ -58,7 +58,7 @@ Citizen.CreateThread(function()
 
                 if SPEEDO.Speed == 'mph' then -- if you change to "kmh" make sure to change this to "elseif" rather then "if"
                     drawTxt(UI.x + 0.670, 	UI.y + 1.420, 1.0,1.0,0.64 , "~w~" .. math.ceil(Speed), 255, 255, 255, 255)
-                    drawTxt(UI.x + 0.690, 	UI.y + 1.427, 1.0,1.0,0.4, "~w~ mp/h", 255, 255, 255, 255)
+                    drawTxt(UI.x + 0.687, 	UI.y + 1.427, 1.0,1.0,0.4, "~w~ mp/h", 255, 255, 255, 255)
                 else
                     drawTxt(UI.x + 0.81, 	UI.y + 1.438, 1.0,1.0,0.64 , [[Carhud ~r~ERROR~w~ ~c~in ~w~SPEEDO Speed~c~ config (something else than ~y~'kmh'~c~ or ~y~'mph'~c~)]], 255, 255, 255, 255)
                 end

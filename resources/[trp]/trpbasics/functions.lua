@@ -1,7 +1,7 @@
 
 local time = 1
 local color = { r = 220, g = 220, b = 220, alpha = 255 } -- Color of the text 
-local font = 0 -- Font of the text
+local font = 4 -- Font of the text
 local background = {
     color = { r = 0, g = 0, b = 0, alpha = 150 },
 }

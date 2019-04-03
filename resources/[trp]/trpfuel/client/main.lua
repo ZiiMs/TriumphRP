@@ -89,11 +89,11 @@ Citizen.CreateThread(function()
 				local fuel 	   = round(GetVehicleFuelLevel(vehicle), 1)
 				
 				if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Exit to fuel your vehicle")
+					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Exit to fill up your vehicle")
 				elseif IsFueling then
 					local position = GetEntityCoords(vehicle)
 
-					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to cancel the fueling of your vehicle.")
+					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to stop filling your vehicle.")
 					DrawText3Ds(position.x, position.y, position.z + 0.5, fuel .. "%")
 					
 					DisableControlAction(0, 0, true) -- Changing view (V)
@@ -127,10 +127,10 @@ Citizen.CreateThread(function()
 
 						IsFueling = false
 					end
-				elseif fuel > 95.0 then
+				elseif fuel > 100.0 then
 					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Vehicle is too filled with gas to be fueled")
 				else
-					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to fuel your vehicle.")
+					DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to fill up your vehicle with gas.")
 					
 					if IsControlJustReleased(0, 47) then
 						local vehicle = GetPlayersLastVehicle()
@@ -155,7 +155,7 @@ Citizen.CreateThread(function()
 				local jerrycan = GetAmmoInPedWeapon(GetPlayerPed(-1), 883325847)
 				
 				if IsFuelingWithJerryCan then
-					DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to cancel fueling the vehicle. Currently at: " .. fuel .. "% - Jerry Can: " .. jerrycan)
+					DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to stop filling your vehicle. Currently at: " .. fuel .. "% - Jerry Can: " .. jerrycan)
 
 					DisableControlAction(0, 0, true) -- Changing view (V)
 					DisableControlAction(0, 22, true) -- Jumping (SPACE)
@@ -189,7 +189,7 @@ Citizen.CreateThread(function()
 						IsFuelingWithJerryCan = false
 					end
 				else
-					DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to fuel the vehicle with your gas can")
+					DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to fill up your vehicle with your Jerry Can")
 
 					if IsControlJustReleased(0, 47) then
 						local vehicle = GetPlayersLastVehicle()
@@ -486,7 +486,7 @@ function DisplayHud()
 		y = -0.001
 
 		drawTxt(UI.x + 0.715, UI.y + 1.455, 1.0,1.071,0.64, fuel, 255, 255, 255, 255)
-		drawTxt(UI.x + 0.740, UI.y + 1.462, 1.0,1.071,0.42, "fuel", 255, 255, 255, 255)
+		drawTxt(UI.x + 0.737, UI.y + 1.462, 1.0,1.071,0.42, "fuel", 255, 255, 255, 255)
 	end
 end
 
