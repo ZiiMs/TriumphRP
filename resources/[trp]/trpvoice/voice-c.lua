@@ -51,21 +51,21 @@ function DrawVoipText()
                     break;
                 end
                 if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
-                    if (GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= playerPed) then
-                        if level.current == 0 then
-                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Normal", 255,255,255,255)
-                        elseif level.current == 1 then
-                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Yell", 255,255,255,255)
-                        elseif level.current == 2 then
-                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Whisper", 255,255,255,255)
-                        end
-                    else
+                    if (GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) == GetPlayerPed(-1)) then
                         if level.current == 0 then
                             drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Normal", 255,255,255,255)
                         elseif level.current == 1 then
                             drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Yell", 255,255,255,255)
                         elseif level.current == 2 then
                             drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Whisper", 255,255,255,255)
+                        end
+                    else
+                        if level.current == 0 then
+                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Normal", 255,255,255,255)
+                        elseif level.current == 1 then
+                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Yell", 255,255,255,255)
+                        elseif level.current == 2 then
+                            drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Voice: Whisper", 255,255,255,255)
                         end
                     end
                 else

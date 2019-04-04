@@ -1,3 +1,6 @@
+TriggerEvent('chat:addSuggestion', '/me', 'Used to display your character doing an action.', {
+    {name="text", help="Text to output in /me."}
+})
 RegisterCommand('me', function(source, args)
     local text = '' .. table.concat(args, " ") .. ''
     TriggerServerEvent('3dme:shareDisplay', text)
@@ -10,6 +13,9 @@ AddEventHandler('3dme:triggerDisplay', function(text, source)
     Display(GetPlayerFromServerId(source), text, offset)
 end)
 
+TriggerEvent('chat:addSuggestion', '/door', 'Used to open/close doors.', {
+    {name="Door", help="DoorID: FrontR: 0 | FrontL: 1 | BackR: 2 | BackL: 3 | Hood: 4 | Trunk: 5 | Trunk2: 6"}
+})
 RegisterCommand("door", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)
@@ -29,6 +35,9 @@ RegisterCommand("door", function(source, args, rawCommand)
     end
 end)
 
+TriggerEvent('chat:addSuggestion', '/seat', 'Used to change what seat you are in.', {
+    {name="Seat", help="SeatID: FreePassenger: -2 | DriverSeat: -1 | Passenger: = 0 | LeftRear: 1 | RightRear: = 2"}
+})
 RegisterCommand("seat", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)

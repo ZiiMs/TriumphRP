@@ -183,7 +183,7 @@ Citizen.CreateThread(function()
             maxSpeed = GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel")
             SetEntityMaxSpeed(vehicle, maxSpeed)
             resetSpeedOnEnter = false
-            print(1)
+            cruiseEnabled = false
         end
         -- Disable speed limiter
         if IsControlJustReleased(0,246) and cruiseEnabled == true then
@@ -191,7 +191,6 @@ Citizen.CreateThread(function()
             maxSpeed = GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel")
             SetEntityMaxSpeed(vehicle, maxSpeed)
             drawTxt(0.670, 1.460, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
-            print(2)
         -- Enable speed limiter
         elseif IsControlJustReleased(0,246) and cruiseEnabled == false then
             cruiseEnabled = true
@@ -201,7 +200,6 @@ Citizen.CreateThread(function()
                 cruise = math.floor(cruise * 2.23694 + 0.5)
                 drawTxt(0.670, 1.460, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
                 showHelpNotification("~INPUT_MP_TEXT_CHAT_TEAM~ to disable.")
-                print(3)
             end
         end
         if cruiseEnabled then
@@ -265,7 +263,7 @@ Citizen.CreateThread(function()
             velBuffer[2] = velBuffer[1]
             velBuffer[1] = GetEntityVelocity(car)
         
-            if IsControlJustReleased(0, 311) then
+            if IsControlJustReleased(0, 29) then
                 beltOn = not beltOn				  
             end
             if (GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped) then

@@ -1,3 +1,9 @@
+
+
+TriggerEvent('chat:addSuggestion', '/wep', 'Spawns a weapon', {
+    { name="weapon", help="The name of the weapon" },
+    { name="ammo", help="Amount of ammo" }
+})
 RegisterCommand("wep", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     if args[1] == nil then
@@ -18,6 +24,10 @@ RegisterCommand("wep", function(source, args, rawCommand)
     end     
 end)
 
+TriggerEvent('chat:addSuggestion', '/disarm', 'Removes player weapons.', {
+    { name="targetID", help="Target playerID" },
+    { name="weapon", help="Weapon to remove. Leave empty for all." }
+})
 RegisterCommand("disarm", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     local targetid = GetPlayerFromServerId(tonumber(args[1]))
@@ -38,6 +48,15 @@ RegisterCommand("disarm", function(source, args, rawCommand)
     end 
 end)
 
+RegisterCommand("gethealth", function(source, args, rawCommand)
+    local ped = GetPlayerPed(PlayerId())
+    print(GetEntityHealth(ped))
+end)
+
+TriggerEvent('chat:addSuggestion', '/setmoney', 'Sets the money of target player.', {
+    { name="TargetID", help="ID of Target player." },
+    { name="money", help="Amount of money." }
+})
 RegisterCommand("setmoney", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     local targetid = GetPlayerFromServerId(tonumber(args[1]))
@@ -62,10 +81,10 @@ end)
 function checkMoney()
     local ped = GetPlayerPed(PlayerId())
     local money = tonumber(playerData.money)
-    print(playerData.money)
     return "$"..money
 end
 
+TriggerEvent('chat:addSuggestion', '/cash', 'Outputs current cash.')
 RegisterCommand("cash", function(source, args, rawCommand)
     TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {"Your Money: "}})
     TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, multiline = true, args = {checkMoney()}})
@@ -95,6 +114,9 @@ RegisterCommand("listweapons", function(source, args, rawCommand)
     
 end)
 
+TriggerEvent('chat:addSuggestion', '/goto', 'Teleport to play.', {
+    { name="playerID", help="The ID of player." }
+})
 RegisterCommand("goto", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     local destped = GetPlayerPed(GetPlayerFromServerId(tonumber(args[1])))
@@ -131,6 +153,7 @@ RegisterCommand("goto", function(source, args, rawCommand)
     end)
 end)
 
+TriggerEvent('chat:addSuggestion', '/gotowp', 'Teleport to waypoint.(sometimes fall through map)')
 RegisterCommand("gotowp", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     local blip = GetFirstBlipInfoId(8)
@@ -152,10 +175,14 @@ RegisterCommand("gotowp", function(source, args, rawCommand)
     end
 end)
 
+TriggerEvent('chat:addSuggestion', '/gotopos', 'Goto Vector3 coords.', {
+    { name="X", help="X Coord" },
+    { name="Y", help="Y Coord" },
+    { name="Z", help="Z Coord" }
+})
 RegisterCommand("gotopos", function(source, args, rawCommand)
     local ped = GetPlayerPed(PlayerId())
     local posX, posY, posZ = tonumber(args[1]), tonumber(args[2]), tonumber(args[3])
-    print(pos)
     Citizen.CreateThread(function()
         SetFocusArea(posX, posY, posZ, 0.0, 0.0, 0.0)
         NetworkFadeOutEntity(ped, true, false)
@@ -166,6 +193,9 @@ RegisterCommand("gotopos", function(source, args, rawCommand)
     end)
 end)
 
+TriggerEvent('chat:addSuggestion', '/veh', 'Spawns a vehicle', {
+    { name="vehicle", help="The name of the vehicle. Default is Panto." }
+})
 RegisterCommand("veh", function(source, args, rawCommand)
     local veh = args[1] or 'Panto'
     local ped = GetPlayerPed(-1)
@@ -185,6 +215,7 @@ RegisterCommand("veh", function(source, args, rawCommand)
     SetPedIntoVehicle(ped, v, -1)
 end)
 
+TriggerEvent('chat:addSuggestion', '/repair', 'Repairs your current car.')
 RegisterCommand("repair", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)
@@ -192,6 +223,7 @@ RegisterCommand("repair", function(source, args, rawCommand)
     SetVehicleFixed(veh)
 end)
 
+TriggerEvent('chat:addSuggestion', '/dv', 'Deletes the nearest car or the car you are inside.(Nearest car is buggy)')
 RegisterCommand("dv", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped, true)
@@ -207,6 +239,7 @@ RegisterCommand("dv", function(source, args, rawCommand)
     end
 end)
 
+TriggerEvent('chat:addSuggestion', '/mod', 'Gives max EMS upgrades')
 RegisterCommand("mod", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)
@@ -217,7 +250,7 @@ RegisterCommand("mod", function(source, args, rawCommand)
     print(GetVehicleMod(veh, 11))
 end)
 
-
+TriggerEvent('chat:addSuggestion', '/pos', 'Gets your current Vector3 coords')
 RegisterCommand("pos", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped, true)
@@ -227,11 +260,13 @@ RegisterCommand("pos", function(source, args, rawCommand)
     TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"^*X: " .. round(pos.x, 3) .. " | Y: " .. round(pos.y, 3) .. " | Z: " .. round(pos.z, 3)}})
 end)
 
+TriggerEvent('chat:addSuggestion', '/gotols', 'Teleports you to Los Santos')
 RegisterCommand("gotols", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     SetPedCoordsKeepVehicle(ped, 192.662, -941.161, 30.692)
     TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"Tped to Los Santos, Legion Square."}})
 end)
+
 
 function round(num, numDecimalPlaces)
     local mult = 10^(numDecimalPlaces or 0)
