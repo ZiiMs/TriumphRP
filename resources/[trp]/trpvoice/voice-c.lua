@@ -53,11 +53,11 @@ function DrawVoipText()
                 if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
                     if (GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) == GetPlayerPed(-1)) then
                         if level.current == 0 then
-                            drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Normal", 255,255,255,255)
+                            drawTxt(0.670, 1.320, 1.0,1.0,0.4, "Voice: Normal", 255,255,255,255)
                         elseif level.current == 1 then
-                            drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Yell", 255,255,255,255)
+                            drawTxt(0.670, 1.320, 1.0,1.0,0.4, "Voice: Yell", 255,255,255,255)
                         elseif level.current == 2 then
-                            drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Voice: Whisper", 255,255,255,255)
+                            drawTxt(0.670, 1.320, 1.0,1.0,0.4, "Voice: Whisper", 255,255,255,255)
                         end
                     else
                         if level.current == 0 then

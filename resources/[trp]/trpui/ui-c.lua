@@ -156,10 +156,18 @@ Citizen.CreateThread(function()
         end
 
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
-            if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
-                drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+            if IsThisModelACar(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1),false))) then
+                if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
+                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                else
+                    drawTxt(0.670, 1.345, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                end
             else
-                drawTxt(0.670, 1.345, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
+                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                else
+                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                end
             end
         else 
             drawTxt(0.670, 1.460, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
@@ -174,7 +182,7 @@ Citizen.CreateThread(function()
   local resetSpeedOnEnter = true
   local cruiseEnabled = false
   while true do
-        Citizen.Wait(0)
+        Wait(0)
         local playerPed = GetPlayerPed(-1)
         local vehicle = GetVehiclePedIsIn(playerPed,false)
         if GetPedInVehicleSeat(vehicle, -1) == playerPed and IsPedInAnyVehicle(playerPed, false) then
@@ -213,25 +221,8 @@ Citizen.CreateThread(function()
   end
 end)
 
-local speedBuffer  = {}
-local velBuffer    = {}
-local beltOn       = false
-local wasInCar     = false
-
-IsCar = function(veh)
-    local vc = GetVehicleClass(veh)
-    return (vc >= 0 and vc <= 7) or (vc >= 9 and vc <= 12) or (vc >= 17 and vc <= 20)
-end	
-
-Fwv = function (entity)
-    local hr = GetEntityHeading(entity) + 90.0
-    if hr < 0.0 then hr = 360.0 + hr end
-    hr = hr * 0.0174533
-    return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
-end
-
-Citizen.CreateThread(function()
-    Wait(500)
+--[[Citizen.CreateThread(function()
+    Wait(250)
     while true do
     Wait(0)
     local ped = GetPlayerPed(-1)
@@ -255,7 +246,7 @@ Citizen.CreateThread(function()
                 local co = GetEntityCoords(ped)
                 local fw = Fwv(ped)
                 SetEntityCoords(ped, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
-                SetEntityVelocity(ped, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+                SetEntityVelocity(ped, velBuffer[2].x, 5.00, velBuffer[2].z)
                 Citizen.Wait(1)
                 SetPedToRagdoll(ped, 1000, 1000, 0, 0, 0, 0)
             end
@@ -286,6 +277,81 @@ Citizen.CreateThread(function()
             beltOn = false
             speedBuffer[1], speedBuffer[2] = 0.0, 0.0
         end
+    end
+end)]]
+
+Fwv = function (entity)
+    local hr = GetEntityHeading(entity) + 90.0
+    if hr < 0.0 then hr = 360.0 + hr end
+    hr = hr * 0.0174533
+    return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
+end
+
+local lastVehicleHP = false
+local beltOn = false
+local velBuffer    = {}
+local speedBuffer = {}
+
+Citizen.CreateThread(function()
+    while true do
+        local playerVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false) -- get current vehicle
+        local ped = GetPlayerPed(-1)
+        if IsEntityAVehicle(playerVehicle) then
+            local vehicleHP = GetVehicleBodyHealth(playerVehicle) -- min 0, max 1000
+            speedBuffer[2] = speedBuffer[1]
+			speedBuffer[1] = GetEntitySpeed(playerVehicle)
+            if lastVehicleHP then
+                if IsThisModelACar(GetEntityModel(playerVehicle)) then
+                    
+                    local vehicleHPDifference = lastVehicleHP - vehicleHP -- get the amount of damage since last frame
+                    if vehicleHPDifference > 0 then
+                        print(vehicleHPDifference)
+                    end
+                    if not beltOn then
+                        --print("Test2!: " .. vehicleHPDifference)
+                        if vehicleHPDifference > 20 then --Do not lower more then 14.0, will cause you to get ejected by bullets.
+                            print("Ejected!")
+                            local co = GetEntityCoords(ped)
+                            local fw = Fwv(ped)
+                            SetEntityCoords(ped, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+                            SetEntityVelocity(ped, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+                
+
+                            Wait(1)
+                            SetPedToRagdoll(ped, 1000, 1000, 0, 0, 0, 0)
+                        end
+                    end
+                    if IsControlJustReleased(0, 29) then
+                        beltOn = not beltOn				  
+                    end
+                    if (GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped) then
+                        if beltOn then 
+                            drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                        else 
+                            drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                        end
+                    else
+                        if beltOn then 
+                            drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                        else 
+                            drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                        end
+                    end
+                end
+            else 
+                speedBuffer[1], speedBuffer[2] = 0.0, 0.0
+            end
+            lastVehicleHP = vehicleHP
+            velBuffer[2] = velBuffer[1]
+            velBuffer[1] = GetEntityVelocity(playerVehicle)
+            speedBuffer[2] = speedBuffer[1]
+            speedBuffer[1] = GetEntitySpeed(car)
+        else
+            -- lets reset the lastHP state if the player exits the vehicle a.k.a not in a vehicle anymore
+            lastVehicleHP = false
+        end
+
+        Wait(0)
     end
 end)
 

@@ -1,9 +1,3 @@
-MySQL.ready(function ()
-    print("[MYSQL]: " .. MySQL.Sync.fetchScalar('SELECT @parameters', {
-        ['@parameters'] =  'Successfully connected!'
-    }))
-end)
-
 RegisterServerEvent('saveMoney')
 AddEventHandler('saveMoney', function(amount)
     local identifiers, steamIdentifier = GetPlayerIdentifiers(source)

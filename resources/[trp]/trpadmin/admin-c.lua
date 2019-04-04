@@ -255,9 +255,11 @@ RegisterCommand("pos", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped, true)
     local zone = GetNameOfZone(pos.x, pos.y, pos.z)
+    local heading = GetEntityHeading(ped)
     
     TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"Zone Name : ^*" .. zone}})
     TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"^*X: " .. round(pos.x, 3) .. " | Y: " .. round(pos.y, 3) .. " | Z: " .. round(pos.z, 3)}})
+    TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, args = {"Heading: ^*" .. round(heading, 3)}})
 end)
 
 TriggerEvent('chat:addSuggestion', '/gotols', 'Teleports you to Los Santos')

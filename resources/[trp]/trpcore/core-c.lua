@@ -21,9 +21,9 @@ Citizen.CreateThread(function()
         end
 
         -- Controller For PED and VEHICLE density!
-        SetVehicleDensityMultiplierThisFrame(0.3)
+        SetVehicleDensityMultiplierThisFrame(0.6)
 		SetPedDensityMultiplierThisFrame(0.4)
-		SetRandomVehicleDensityMultiplierThisFrame(0.2)
+		SetRandomVehicleDensityMultiplierThisFrame(0.6)
 
         -- Remove Getting Weapons From Vehicles
         DisablePlayerVehicleRewards(PlayerId())
