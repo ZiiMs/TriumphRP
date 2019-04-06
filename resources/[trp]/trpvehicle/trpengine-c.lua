@@ -14,18 +14,23 @@ Citizen.CreateThread(function()
                 SetVehicleJetEngineOn(newveh, false)
             end
         end
+        local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
         if GetPedInVehicleSeat(veh, -1) == ped and IsPedInAnyVehicle(ped, false) then
             if IsThisModelACar(GetEntityModel(veh)) then
+                local y = 1.345 + safeZoneOffset
+                local x = 0.704 - safeZoneOffset
                 if GetIsVehicleEngineRunning(veh) then
-                    drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
                 elseif GetIsVehicleEngineRunning(veh) == false then
-                    drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
                 end
             else
+                local y = 1.370 + safeZoneOffset
+                local x = 0.704 - safeZoneOffset
                 if GetIsVehicleEngineRunning(veh) then
-                    drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
                 elseif GetIsVehicleEngineRunning(veh) == false then
-                    drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
                 end
             end
             if IsControlJustPressed(0, 47) and IsControlPressed(0, 21) then 
@@ -39,20 +44,24 @@ Citizen.CreateThread(function()
                         Wait(0)
                         dots = (dots + 1) % 51
                         if IsThisModelACar(GetEntityModel(veh)) then
+                            local y = 1.345 + safeZoneOffset
+                            local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
                             end
                         else
+                            local y = 1.370 + safeZoneOffset
+                            local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
                             end
                         end  
                     end
@@ -71,20 +80,24 @@ Citizen.CreateThread(function()
                         Wait(0)
                         dots = (dots + 1) % 51
                         if IsThisModelACar(GetEntityModel(veh)) then
+                            local y = 1.345 + safeZoneOffset
+                            local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(0.704, 1.345, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
                             end
                         else
+                            local y = 1.370 + safeZoneOffset
+                            local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(0.704, 1.370, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
                             end
                         end  
                     end

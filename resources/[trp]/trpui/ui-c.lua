@@ -36,7 +36,7 @@ Citizen.CreateThread(function()
 			local MyPedVeh = GetVehiclePedIsIn(GetPlayerPed(-1),false)
 			local PlateVeh = GetVehicleNumberPlateText(MyPedVeh)
 			local VehStopped = IsVehicleStopped(MyPedVeh)
-			local VehEngineHP = GetVehicleEngineHealth(MyPedVeh) 
+			local VehEngineHP = GetVehicleEngineHealth(MyPedVeh)
 			local VehBodyHP = GetVehicleBodyHealth(MyPedVeh)
             local VehBurnout = IsVehicleInBurnout(MyPedVeh)
             
@@ -55,12 +55,18 @@ Citizen.CreateThread(function()
                 --[[if SPEEDO.Speed == 'kmh' then
                     drawTxt(UI.x + 0.61, 	UI.y + 1.42, 1.0,1.0,0.64 , "~w~" .. math.ceil(Speed), 255, 255, 255, 255) -- remove box brackets to make a thing if needed for "kmh"
                     drawTxt(UI.x + 0.633, 	UI.y + 1.432, 1.0,1.0,0.4, "~w~ km/h", 255, 255, 255, 255)]]--
-
+                local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
                 if SPEEDO.Speed == 'mph' then -- if you change to "kmh" make sure to change this to "elseif" rather then "if"
-                    drawTxt(UI.x + 0.670, 	UI.y + 1.420, 1.0,1.0,0.64 , "~w~" .. math.ceil(Speed), 255, 255, 255, 255)
-                    drawTxt(UI.x + 0.687, 	UI.y + 1.427, 1.0,1.0,0.4, "~w~ mp/h", 255, 255, 255, 255)
+                    local y = 1.420 + safeZoneOffset
+                    local x = 0.670 - safeZoneOffset
+                    drawTxt(x, 	y, 1.0,1.0,0.64 , "~w~" .. math.ceil(Speed), 255, 255, 255, 255)
+                    y = 1.427 + safeZoneOffset
+                    x = 0.687 - safeZoneOffset
+                    drawTxt(x, 	y, 1.0,1.0,0.4, "~w~ mp/h", 255, 255, 255, 255)
                 else
-                    drawTxt(UI.x + 0.81, 	UI.y + 1.438, 1.0,1.0,0.64 , [[Carhud ~r~ERROR~w~ ~c~in ~w~SPEEDO Speed~c~ config (something else than ~y~'kmh'~c~ or ~y~'mph'~c~)]], 255, 255, 255, 255)
+                    local y = 1.438 + safeZoneOffset
+                    local x = 0.81 - safeZoneOffset
+                    drawTxt(x, y, 1.0,1.0,0.64 , [[Carhud ~r~ERROR~w~ ~c~in ~w~SPEEDO Speed~c~ config (something else than ~y~'kmh'~c~ or ~y~'mph'~c~)]], 255, 255, 255, 255)
                 end
             end
         end
@@ -102,13 +108,18 @@ Citizen.CreateThread(function()
         end
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
             if (GetStreetNameFromHashKey(var1)) and (GetStreetNameFromHashKey(var2)) and GetNameOfZone(pos.x, pos.y, pos.z) then
+                local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
                 if var2 == nil or tostring(GetStreetNameFromHashKey(var2)) == "" then 
                     if zones[GetNameOfZone(pos.x, pos.y, pos.z)] and tostring(GetStreetNameFromHashKey(var1)) then
-                        drawTxt(0.670, 1.46, 1.0,1.0,0.4, direction .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var1)) .. "~w~" .. "~b~ | ~w~" .. zones[GetNameOfZone(pos.x, pos.y, pos.z)], 255, 255, 255, 255)
+                        local y = 1.46 + safeZoneOffset
+                        local x = 0.670 - safeZoneOffset
+                        drawTxt(x, y, 1.0,1.0,0.4, direction .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var1)) .. "~w~" .. "~b~ | ~w~" .. zones[GetNameOfZone(pos.x, pos.y, pos.z)], 255, 255, 255, 255)
                     end 
                 else
                     if zones[GetNameOfZone(pos.x, pos.y, pos.z)] and tostring(GetStreetNameFromHashKey(var1)) and tostring(GetStreetNameFromHashKey(var2)) then
-                        drawTxt(0.670, 1.46, 1.0,1.0,0.4, direction .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var2)) .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var1)) .. "~w~" .. "~b~ | ~w~" .. zones[GetNameOfZone(pos.x, pos.y, pos.z)], 255, 255, 255, 255)
+                        local y = 1.46 + safeZoneOffset
+                        local x = 0.670 - safeZoneOffset
+                        drawTxt(x, y, 1.0,1.0,0.4, direction .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var2)) .. "~b~ | ~w~" .. tostring(GetStreetNameFromHashKey(var1)) .. "~w~" .. "~b~ | ~w~" .. zones[GetNameOfZone(pos.x, pos.y, pos.z)], 255, 255, 255, 255)
                         --print("Zones: " .. zones[GetNameOfZone(pos.x, pos.y, pos.z)] .. " | StreetName: " .. tostring(GetStreetNameFromHashKey(var1)))
                     end 
                 end
@@ -154,23 +165,34 @@ Citizen.CreateThread(function()
             CalculateTimeToDisplay()
 			timeAndDateString = timeAndDateString .. hour .. ":" .. minute .. " AM" -- Example: Time: 00:00
         end
-
+        local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
         if (GetVehiclePedIsIn(GetPlayerPed(-1),false) ~= 0 ) then
             if IsThisModelACar(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1),false))) then
                 if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
-                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                    local y = 1.370 + safeZoneOffset
+                    local x = 0.670 - safeZoneOffset
+                    drawTxt(x,y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
                 else
-                    drawTxt(0.670, 1.345, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                    local y = 1.345 + safeZoneOffset
+                    local x = 0.670 - safeZoneOffset
+                    drawTxt(x, y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
                 end
             else
                 if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1),false), -1) ~= GetPlayerPed(-1) then
-                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                    local y = 1.395 + safeZoneOffset
+                    local x = 0.670 - safeZoneOffset
+                    drawTxt(x, y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
                 else
-                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+                    local y = 1.370 + safeZoneOffset
+                    local x = 0.670 - safeZoneOffset
+                    drawTxt(x, y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
                 end
             end
         else 
-            drawTxt(0.670, 1.460, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
+            local y = 1.460 + safeZoneOffset
+            local x = 0.670 - safeZoneOffset
+            print(x)
+            drawTxt(x, y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
         end
 	end
 end)
@@ -194,11 +216,12 @@ Citizen.CreateThread(function()
             cruiseEnabled = false
         end
         -- Disable speed limiter
+        local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
         if IsControlJustReleased(0,246) and cruiseEnabled == true then
             cruiseEnabled = false
             maxSpeed = GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel")
             SetEntityMaxSpeed(vehicle, maxSpeed)
-            drawTxt(0.670, 1.460, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
+            --drawTxt(0.670, 1.460, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
         -- Enable speed limiter
         elseif IsControlJustReleased(0,246) and cruiseEnabled == false then
             cruiseEnabled = true
@@ -206,14 +229,16 @@ Citizen.CreateThread(function()
             SetEntityMaxSpeed(vehicle, cruise)
             if useMph then
                 cruise = math.floor(cruise * 2.23694 + 0.5)
-                drawTxt(0.670, 1.460, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
+                --drawTxt(0.670, 1.460, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
                 showHelpNotification("~INPUT_MP_TEXT_CHAT_TEAM~ to disable.")
             end
         end
+        local y = 1.395 + safeZoneOffset
+        local x = 0.670 - safeZoneOffset
         if cruiseEnabled then
-            drawTxt(0.670, 1.395, 1.0,1.0,0.4,"Cruise Control: ~g~Enabled", 255,255,255,255)
+            drawTxt(x, y, 1.0,1.0,0.4, "Cruise Control: [~g~" .. cruise .. "~w~] ~g~Enabled", 255,255,255,255)
         else
-            drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
+            drawTxt(x, y, 1.0,1.0,0.4, "Cruise Control: ~r~Disabled", 255,255,255,255)
         end
     else 
         resetSpeedOnEnter = true
@@ -221,7 +246,24 @@ Citizen.CreateThread(function()
   end
 end)
 
---[[Citizen.CreateThread(function()
+local speedBuffer  = {}
+local velBuffer    = {}
+local beltOn       = false
+local wasInCar     = false
+
+IsCar = function(veh)
+    local vc = GetVehicleClass(veh)
+    return (vc >= 0 and vc <= 7) or (vc >= 9 and vc <= 12) or (vc >= 17 and vc <= 20)
+end	
+
+Fwv = function (entity)
+    local hr = GetEntityHeading(entity) + 90.0
+    if hr < 0.0 then hr = 360.0 + hr end
+    hr = hr * 0.0174533
+    return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
+end
+
+Citizen.CreateThread(function()
     Wait(250)
     while true do
     Wait(0)
@@ -239,10 +281,9 @@ end)
     
             if speedBuffer[2] ~= nil 
             and not beltOn
-            and GetEntitySpeedVector(car, true).y > 1.0  
+            --and GetEntitySpeedVector(car, true).y > 1.0  
             and speedBuffer[1] > 15.25
-            and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255 ) then
-            
+            and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255 - 1.0) then
                 local co = GetEntityCoords(ped)
                 local fw = Fwv(ped)
                 SetEntityCoords(ped, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
@@ -257,17 +298,23 @@ end)
             if IsControlJustReleased(0, 29) then
                 beltOn = not beltOn				  
             end
+            local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
             if (GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped) then
+                local y = 1.370 + safeZoneOffset
+                local x = 0.670 - safeZoneOffset
                 if beltOn then 
-                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                    
+                    drawTxt(x, y, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
                 else 
-                    drawTxt(0.670, 1.370, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
                 end
             else
+                local y = 1.395 + safeZoneOffset
+                local x = 0.670 - safeZoneOffset
                 if beltOn then 
-                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Seatbelt: ~g~Buckled", 255,255,255,255)
                 else 
-                    drawTxt(0.670, 1.395, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "Seatbelt: ~r~Unbuckled", 255,255,255,255)
                 end
             end
 
@@ -278,9 +325,9 @@ end)
             speedBuffer[1], speedBuffer[2] = 0.0, 0.0
         end
     end
-end)]]
+end)
 
-Fwv = function (entity)
+--[[Fwv = function (entity)
     local hr = GetEntityHeading(entity) + 90.0
     if hr < 0.0 then hr = 360.0 + hr end
     hr = hr * 0.0174533
@@ -309,7 +356,7 @@ Citizen.CreateThread(function()
                     end
                     if not beltOn then
                         --print("Test2!: " .. vehicleHPDifference)
-                        if vehicleHPDifference > 20 then --Do not lower more then 14.0, will cause you to get ejected by bullets.
+                        if vehicleHPDifference > 33 then --Do not lower more then 14.0, will cause you to get ejected by bullets.
                             print("Ejected!")
                             local co = GetEntityCoords(ped)
                             local fw = Fwv(ped)
@@ -353,7 +400,7 @@ Citizen.CreateThread(function()
 
         Wait(0)
     end
-end)
+end)]]
 
 function showHelpNotification(msg)
     BeginTextCommandDisplayHelp("STRING")

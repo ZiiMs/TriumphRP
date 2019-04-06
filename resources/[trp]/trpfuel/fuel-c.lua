@@ -468,11 +468,7 @@ end
 
 function DisplayHud()
 	local playerPed = GetPlayerPed(-1)
-	local UI = { 
-		x =  0.000 ,
-		y = -0.001 ,
-	}
-
+	local safeZoneOffset = (GetSafeZoneSize() / 2.5) - 0.4
 	if Config.ShouldDisplayHud and GetVehiclePedIsIn(playerPed, false) ~= 0 then
 
 		local vehicle = GetPlayersLastVehicle()
@@ -482,11 +478,12 @@ function DisplayHud()
 			fuel = "0"
 		end
 
-		x =  0.000 
-		y = -0.001
-
-		drawTxt(UI.x + 0.715, UI.y + 1.455, 1.0,1.071,0.64, fuel, 255, 255, 255, 255)
-		drawTxt(UI.x + 0.737, UI.y + 1.462, 1.0,1.071,0.42, "fuel", 255, 255, 255, 255)
+		local y = 1.455 + safeZoneOffset
+		local x = 0.715 - safeZoneOffset
+		drawTxt(x,y, 1.0,1.071,0.64, fuel, 255, 255, 255, 255)
+		y = 1.462 + safeZoneOffset
+		x = 0.737 - safeZoneOffset
+		drawTxt(x, y, 1.0,1.071,0.42, "fuel", 255, 255, 255, 255)
 	end
 end
 
