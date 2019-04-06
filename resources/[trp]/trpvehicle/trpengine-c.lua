@@ -20,17 +20,17 @@ Citizen.CreateThread(function()
                 local y = 1.345 + safeZoneOffset
                 local x = 0.704 - safeZoneOffset
                 if GetIsVehicleEngineRunning(veh) then
-                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~g~On", 255,255,255,255)
                 elseif GetIsVehicleEngineRunning(veh) == false then
-                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~r~Off", 255,255,255,255)
                 end
             else
                 local y = 1.370 + safeZoneOffset
                 local x = 0.704 - safeZoneOffset
                 if GetIsVehicleEngineRunning(veh) then
-                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: On", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~g~On", 255,255,255,255)
                 elseif GetIsVehicleEngineRunning(veh) == false then
-                    drawTxt(x, y, 1.0,1.0,0.4, "Engine: Off", 255,255,255,255)
+                    drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~r~Off", 255,255,255,255)
                 end
             end
             if IsControlJustPressed(0, 47) and IsControlPressed(0, 21) then 
@@ -47,21 +47,21 @@ Citizen.CreateThread(function()
                             local y = 1.345 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting...", 255,255,255,255)
                             end
                         else
                             local y = 1.370 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting...", 255,255,255,255)
                             end
                         end  
                     end
@@ -83,21 +83,21 @@ Citizen.CreateThread(function()
                             local y = 1.345 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting...", 255,255,255,255)
                             end
                         else
                             local y = 1.370 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
                             if dots <= 17 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting.", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting.", 255,255,255,255)
                             elseif dots <= 34 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting..", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting..", 255,255,255,255)
                             elseif dots <= 51 then
-                                drawTxt(x, y, 1.0,1.0,0.4, "Engine: Starting...", 255,255,255,255)
+                                drawTxt(x, y, 1.0,1.0,0.4, "|  Engine: ~y~Starting...", 255,255,255,255)
                             end
                         end  
                     end
