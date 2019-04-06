@@ -215,12 +215,14 @@ RegisterCommand("veh", function(source, args, rawCommand)
     SetPedIntoVehicle(ped, v, -1)
 end)
 
-TriggerEvent('chat:addSuggestion', '/repair', 'Repairs your current car.')
+TriggerEvent('chat:addSuggestion', '/repair', 'Repairs and cleans your current car.')
 RegisterCommand("repair", function(source, args, rawCommand)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsIn(ped,false)
-    if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) end
+    if (veh == 0 ) then TriggerEvent('chat:addMessage', { color = { 255, 255, 255}, args = {"You are not in a vehicle."}}) 
+    end
     SetVehicleFixed(veh)
+    SetVehicleDirtLevel(veh, 0)
 end)
 
 TriggerEvent('chat:addSuggestion', '/dv', 'Deletes the nearest car or the car you are inside.(Nearest car is buggy)')
