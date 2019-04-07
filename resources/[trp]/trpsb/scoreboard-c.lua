@@ -106,7 +106,7 @@ end
 Citizen.CreateThread(function () 
     while true do 
         Wait(0)
-        if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
+        if IsControlPressed(0, 10) then
             DrawPList()
         end
     end
@@ -116,7 +116,7 @@ local mpGamerTags = {}
 Citizen.CreateThread(function () 
     while true do 
         Wait(0)
-        if IsControlPressed(0, 20) or IsControlPressed(0, 27) then
+        if IsControlPressed(0, 10) then
             for i = 0, 255 do
                 if NetworkIsPlayerActive(i) then
                     local ped = GetPlayerPed(i)
@@ -140,7 +140,7 @@ Citizen.CreateThread(function ()
                     mpGamerTags[i] = nil
                 end
             end
-        elseif IsControlJustReleased(0, 20) or IsControlJustReleased(0, 27) then
+        elseif IsControlJustReleased(0, 10) then
             --print("Released" .. mpGamerTags[1])
             for i = 0, 255 do
                 if NetworkIsPlayerActive(i) then

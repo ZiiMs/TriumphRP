@@ -78,25 +78,25 @@ Citizen.CreateThread(function()
                 local timer = GetGameTimer()
                     while GetGameTimer() < timer + 1500 do
                         Wait(0)
-                        dots = (dots + 1) % 51
+                        dots = (dots + 1) % 150
                         if IsThisModelACar(GetEntityModel(veh)) then
                             local y = 1.345 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
-                            if dots <= 17 then
+                            if dots <= 50 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting.", 255,255,255,255)
-                            elseif dots <= 34 then
+                            elseif dots <= 100 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting..", 255,255,255,255)
-                            elseif dots <= 51 then
+                            elseif dots <= 150 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting...", 255,255,255,255)
                             end
                         else
                             local y = 1.370 + safeZoneOffset
                             local x = 0.704 - safeZoneOffset
-                            if dots <= 17 then
+                            if dots <= 50 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting.", 255,255,255,255)
-                            elseif dots <= 34 then
+                            elseif dots <= 100 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting..", 255,255,255,255)
-                            elseif dots <= 51 then
+                            elseif dots <= 150 then
                                 drawTxt(x, y, 1.0,1.0,0.4, "Engine: ~o~Starting...", 255,255,255,255)
                             end
                         end  

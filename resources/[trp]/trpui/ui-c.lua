@@ -191,7 +191,6 @@ Citizen.CreateThread(function()
         else 
             local y = 1.460 + safeZoneOffset
             local x = 0.670 - safeZoneOffset
-            print(x)
             drawTxt(x, y, 1.0,1.0,0.4, timeAndDateString, 255, 255, 255, 255)
         end
 	end

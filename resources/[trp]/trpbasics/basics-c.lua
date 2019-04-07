@@ -29,7 +29,7 @@ RegisterCommand("door", function(source, args, rawCommand)
         return false
     end
     if status == 0.0 then
-        SetVehicleDoorOpen(veh, door, true, false)
+        SetVehicleDoorOpen(veh, door, false, false)
     else
         SetVehicleDoorShut(veh, door, false)
     end

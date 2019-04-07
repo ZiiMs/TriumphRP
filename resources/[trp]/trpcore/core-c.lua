@@ -171,7 +171,11 @@ Citizen.CreateThread(function()
 				if GetIsTaskActive(GetPlayerPed(-1), 165) then
 					SetPedIntoVehicle(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), false), 0)
 				end
-			end
-		end
+            end
+        DisplayRadar(true)
+        else 
+        DisplayRadar(false)
+        end
 	end
+    
 end)

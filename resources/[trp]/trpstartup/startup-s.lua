@@ -43,7 +43,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
                     ['@name'] = name,
                     ['@steamid'] = steamIdentifier
                 })
-            TriggerClientEvent('loadMoney', lastSource, 2500)
+            TriggerClientEvent('setData', lastSource, steamIdentifier, 2500)
             wb = false
         end
     end)
@@ -70,6 +70,7 @@ local function onResourceStart(name, setKickReason)
             print("Info2: ".. gotInfo[1].name)
             print("Info3: ".. gotInfo[1].steamid)
             print("Info4: "..gotInfo[1].money)
+            money = gotInfo[1].money
             TriggerClientEvent('setData', lastSource, gotInfo[1].steamid, tonumber(gotInfo[1].money))
         else 
             MySQL.Async.execute("INSERT INTO accounts (name, steamid) VALUES (@name, @steamid)",
@@ -77,7 +78,7 @@ local function onResourceStart(name, setKickReason)
                     ['@name'] = name,
                     ['@steamid'] = steamIdentifier
                 })
-            TriggerClientEvent('loadMoney', lastSource, 2500)
+            TriggerClientEvent('setData', lastSource, steamIdentifier, 2500)
             wb = false
         end
     end)
@@ -91,9 +92,11 @@ AddEventHandler('serverPlayerSpawned', function(returning)
     if wb == false then
         TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome " .. GetPlayerName(source) .. " to Triumph RP.")
         TriggerClientEvent('setData', source, GetSteam(source), 2500)
+        print("Spawning!")
     else
         TriggerClientEvent('chatMessage', source, "", { 255, 255, 255}, "Welcome back to Triumph RP " .. GetPlayerName(source) .. ".")
         TriggerClientEvent('setData', source, GetSteam(source), money)
+        print("Spawning!2")
     end
 end)
 

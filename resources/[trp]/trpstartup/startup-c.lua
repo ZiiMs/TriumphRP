@@ -1,7 +1,6 @@
 playerData = {name, steamid, money}
 RegisterNetEvent('setData')
 AddEventHandler('setData', function(steamid, amount)
-    print(2)
     local name = GetPlayerName(GetPlayerServerId(-1))
     playerData.name = name
     playerData.steamid = steamid
@@ -19,5 +18,6 @@ end)
 AddEventHandler('onClientResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     print("Resource Started")
+    firstSpawn = false
     TriggerServerEvent("resourceStarted")
 end)
